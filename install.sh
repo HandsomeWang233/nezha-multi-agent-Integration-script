@@ -15,7 +15,7 @@ NZ_AGENT_SERVICE="/etc/systemd/system/${NZ_AGENT_SERVICE_NAME}.service"
 NZ_AGENT_SERVICERC="/etc/init.d/nezha-agent-2"
 NZ_DASHBOARD_SERVICE="/etc/systemd/system/nezha-dashboard.service"
 NZ_DASHBOARD_SERVICERC="/etc/init.d/nezha-dashboard"
-NZ_VERSION="v0.15.5"
+NZ_VERSION="v0.20.5"
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -286,23 +286,6 @@ install_agent() {
     selinux
 
     echo -e "> 安装监控Agent"
-
-    echo -e "正在获取监控Agent版本号"
-
-    local version=$(curl -m 10 -sL "https://api.github.com/repos/nezhahq/agent/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-    if [ ! -n "$version" ]; then
-        version=$(curl -m 10 -sL "https://fastly.jsdelivr.net/gh/nezhahq/agent/" | grep "option\.value" | awk -F "'" '{print $2}' | sed 's/nezhahq\/agent@/v/g')
-    fi
-    if [ ! -n "$version" ]; then
-        version=$(curl -m 10 -sL "https://gcore.jsdelivr.net/gh/nezhahq/agent/" | grep "option\.value" | awk -F "'" '{print $2}' | sed 's/nezhahq\/agent@/v/g')
-    fi
-
-    if [ ! -n "$version" ]; then
-        echo -e "获取版本号失败，请检查本机能否链接 https://api.github.com/repos/nezhahq/agent/releases/latest"
-        return 0
-    else
-        echo -e "当前最新版本为: ${version}"
-    fi
 
     # 哪吒监控文件夹
     mkdir -p $NZ_AGENT_PATH
@@ -580,7 +563,7 @@ restart_and_update_standalone() {
         rc-service nezha-dashboard stop
     fi
 
-    wget -qO app.zip https://${GITHUB_URL}/naiba/nezha/releases/latest/download/dashboard-linux-$os_arch.zip >/dev/null 2>&1 && unzip -qq app.zip && mv dist/dashboard-linux-$os_arch app && rm -r app.zip dist
+    wget -qO app.zip https://${GITHUB_URL}/naiba/nezha/releases/v0.20.5/download/dashboard-linux-$os_arch.zip >/dev/null 2>&1 && unzip -qq app.zip && mv dist/dashboard-linux-$os_arch app && rm -r app.zip dist
 
     if [ "$os_alpine" != 1 ]; then
         systemctl daemon-reload
