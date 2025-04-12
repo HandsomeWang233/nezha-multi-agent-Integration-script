@@ -95,7 +95,7 @@ pre_check() {
             Docker_IMG="ghcr.io\/naiba\/nezha-dashboard"
         else
             GITHUB_RAW_URL="gitee.com/naibahq/nezha/raw/master"
-            GITHUB_URL="hub.fgit.cf"
+            GITHUB_URL="ghfast.top/github.com"
             Get_Docker_URL="get.docker.com"
             Get_Docker_Argu=" -s docker --mirror Aliyun"
             Docker_IMG="registry.cn-shanghai.aliyuncs.com\/naibahq\/nezha-dashboard"
